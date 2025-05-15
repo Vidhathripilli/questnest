@@ -1088,7 +1088,7 @@ export default function Dashboard() {
   return (
     <>
       {isAdminOrOwner ? renderAdminDashboard() : renderUserDashboard()}
-      <DeleteConfirmationModal />
+      <DeleteConfirmatio jgfhgsdfhghgchgsdhjhsvukhdnModal />
     </>
   );
 } 
