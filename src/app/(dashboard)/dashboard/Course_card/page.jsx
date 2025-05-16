@@ -8,9 +8,10 @@ import { ApiClientLms } from "@/src/service/ApiUserAccount";
 import Link from "next/link";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import Image from "next/image";
-import calander from "../../../../assets/icons/social_media_icons/calendars.png";
+import calendarr from "../../../../assets/icons/dashboard_icons/calendarr.svg"
 import Delete from "../../../../assets/icons/dashboard_icons/Delete.svg";
 import { useSearch } from "@/context/SearchContext";
+import addfilled from "../../../../assets/icons/dashboard_icons/addfilled.svg";
 // import { useSearch } from "@/context/SearchContext";
 
 export default function page() {
@@ -68,6 +69,7 @@ export default function page() {
   const [successMessage, setSuccessMessage] = useState("");
   const [activeTab, setActiveTab] = useState("all");
   const [dataFetched, setDataFetched] = useState(false);
+
   const router = useRouter();
   const pathname = usePathname();
   // const user = useSelector((state) => state.auth?.user) || {};
@@ -506,30 +508,20 @@ export default function page() {
             {isAdminOrOwner && (
               <button
                 onClick={() => setCourseModel(true)}
-                className="bg-indigo-600 text-white rounded-full py-1.5 px-4 text-sm font-medium flex items-center shadow-sm hover:bg-indigo-700 transition-colors duration-200"
+                className="bg-[#402BA3] ml-2 text-white w-[138px] h-[40px] rounded-[8px] py-1.5 px-4 text-sm font-medium flex items-center shadow-sm transition-colors duration-200"
                 disabled={loading}
               >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-4 w-4 mr-1"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
-                    clipRule="evenodd"
-                  />
-                </svg>
+                <Image src={addfilled} className="mr-2" alt="Add" />
                 Add course
               </button>
+
             )}
 
           </div>
         )}
 
         {/* Courses Grid */}
-        <div className="px-4 sm:px-4 lg:px-8 pb-8 ">
+        <div className="w-[1150px] h-[726px] px-4 sm:px-4 lg:px-8 pb-8  ">
           {loading && filteredCourses.length === 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5">
               {[...Array(10)].map((_, i) => (
@@ -554,7 +546,7 @@ export default function page() {
               {filteredCourses.map((item, idx) => (
                 <div
                   key={item.id || idx}
-                  className="bg-white p-2 rounded-lg h-[300px] shadow overflow-hidden"
+                  className="bg-white  p-2 rounded-lg w-[215px] h-[300px] shadow overflow-hidden border border-red-600"
                 >
                   {/* Course card top area with background - UPDATED WITH CONDITIONAL ROUTING */}
                   <Link
@@ -564,7 +556,7 @@ export default function page() {
                         : `/dashboard/Course_card/${item.module_id}`
                     }
                   >
-                    <div className="relative h-[110px] bg-gradient-to-r from-orange-50 to-orange-100 flex items-center justify-center">
+                    <div className="relative h-[110px] bg-gradient-to-r from-orange-50 to-orange-100 flex items-center justify-center ">
                       <div className="text-center rounded-md text-orange-800 font-medium p-2">
                         <div>{item.name}</div>
                       </div>
@@ -581,9 +573,7 @@ export default function page() {
                   <div className="p-3 text-xs">
                     <div className="font-medium text-gray-800">{item.name}</div>
                     <div className="text-gray-500 mt-1 leading-[1.6]">
-                      <div className="mb-5">
-                        {item.description}
-                      </div>
+
                       {/* {item.description.length > 100 && (
                         <button
                           onClick={() => setShowFull(!showFull)}
@@ -596,7 +586,7 @@ export default function page() {
 
                     <div className="flex items-center text-gray-500 mt-1 gap-2">
                       <Image
-                        src={calander}
+                        src={calendarr}
                         className="h-[20px] w-[20px]"
                         alt="Calendar"
                       />
@@ -606,23 +596,24 @@ export default function page() {
                     {/* Action buttons - Visible for entity_owner and entity_admin */}
                     {isAdminOrOwner && (
                       <div className="flex items-center justify-between mt-4 gap-2">
-                        <Link href={`/dashboard/Course_card/${item.module_id}`} className="flex-1">
-                          <button className="w-[74px] h-[26px] px-4 py-1.5 text-sm bg-white border border-[#402BA3] rounded-[4px] text-[#402BA3] font-medium">
+                        <Link href={`/dashboard/Course_card/${item.module_id}`}>
+                          <button className=" w-[74px] h-[30px] px-4 py-2 text-sm bg-white border border-[#402BA3] rounded-[4px] text-[#402BA3] font-medium">
                             Edit
                           </button>
                         </Link>
 
-                        <Link href={`/dashboard/watch/${item.module_id}`} className="flex-1">
-                          <button className="w-full px-4 py-1.5 text-sm bg-[#402BA3] text-white rounded-md font-medium">
+                        <Link href={`/dashboard/watch/${item.module_id}`}>
+                          <button className=" w-[74px] h-[30px] px-4 py-2 text-sm bg-[#402BA3] text-white rounded-[4px] font-medium">
                             Watch
                           </button>
                         </Link>
 
                         <button
-                          className="p-2 text-red-500 hover:text-red-700 focus:outline-none rounded-md "
+                          className="p-2 text-red-500 hover:text-red-700 focus:outline-none rounded-[4px]"
                           onClick={() => handleOpenDeleteModal(item)}
                         >
-                          <Image src={Delete} />                        </button>
+                          <Image src={Delete} className="w-[24px] h-[24px]" />
+                        </button>
                       </div>
                     )}
 

@@ -526,244 +526,239 @@ export default function Dashboard() {
         </div>
 
 
-        {/* Analytics and Quick Access */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {/* Revenue Analytics */}
-          <div className="bg-white p-6 rounded-xl shadow-md md:col-span-2">
-            <h2 className="text-lg font-semibold mb-4 ">Revenue Analytics</h2>
-            <ResponsiveContainer width="100%" height={250}>
-              <LineChart data={revenueData}>
-                <XAxis dataKey="date" />
-                <YAxis />
-                <Tooltip />
-                <Line
-                  type="monotone"
-                  dataKey="income"
-                  stroke="#4f46e5"
-                  strokeWidth={3}
-                />
-              </LineChart>
-            </ResponsiveContainer>
+       <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
+  {/* Revenue Analytics */}
+  <div className="bg-white p-6 rounded-xl shadow-md md:col-span-5 flex flex-col">
+    <div className="flex justify-between items-start mb-2">
+      <h2 className="text-lg font-semibold">Revenue Analytics</h2>
+      <button className="bg-[#F2F0FD] text-[#402BA3] text-xs px-3 py-1 rounded-lg font-medium">
+        Last 8 Days ▾
+      </button>
+    </div>
+    <ResponsiveContainer width="100%" height={250}>
+      <LineChart data={revenueData}>
+        <XAxis dataKey="date" />
+        <YAxis />
+        <Tooltip />
+        <Line
+          type="monotone"
+          dataKey="income"
+          stroke="#4f46e5"
+          strokeWidth={3}
+        />
+      </LineChart>
+    </ResponsiveContainer>
+  </div>
+
+  {/* Courses Analysis */}
+  <div className="bg-white p-6 rounded-xl shadow-md md:col-span-4 flex flex-col">
+    <div className="flex justify-between items-start mb-2">
+      <div>
+        <div className="text-xs text-gray-400 font-medium">Activity</div>
+        <h2 className="text-lg font-semibold">Courses Analysis</h2>
+      </div>
+      <button className="bg-[#F2F0FD] text-[#402BA3] text-xs px-3 py-1 rounded-lg font-medium">
+        Weekly ▾
+      </button>
+    </div>
+    <ResponsiveContainer width="100%" height={250}>
+      <BarChart data={courseData}>
+        <XAxis dataKey="day" />
+        <YAxis />
+        <Tooltip />
+        <Bar dataKey="students" fill="#402BA34D" />
+      </BarChart>
+    </ResponsiveContainer>
+  </div>
+
+  {/* Quick Access */}
+  <div className="bg-white p-6 rounded-xl shadow-md md:col-span-3 flex flex-col gap-4">
+    <h2 className="text-lg font-semibold mb-2">Quick Access</h2>
+    <button
+      className="w-full border-2 border-dashed border-gray-400 rounded-xl flex flex-col items-center justify-center py-4 gap-2"
+      onClick={() => setCourseModel(true)}
+    >
+      <div className="bg-[#402BA3] text-white rounded-full p-2">
+        <Image src={addcourse}/>
+      </div>
+      <span className="text-sm font-medium text-black">Create Course</span>
+    </button>
+    <button
+      className="w-full border-2 border-dashed border-gray-400 rounded-xl flex flex-col items-center justify-center py-4 gap-2"
+      onClick={() => setIsAddModalOpen(true)}
+    >
+      <div className=" text-white rounded-full p-2">
+        <Image src={coach}/>
+      </div>
+      <span className="text-sm font-medium text-black">Add Coach</span>
+    </button>
+    <button
+      className="w-full border-2 border-dashed border-gray-400 rounded-xl flex flex-col items-center justify-center py-4 gap-2"
+      onClick={() => setIsAddStdModalOpen(true)}
+    >
+      <div className="bg-[#402BA3] text-white rounded-full p-2">
+        <Image src={addstudent}/>
+      </div>
+      <span className="text-sm font-medium text-black">Add Student</span>
+    </button>
+
+    {/* Add Coach Modal */}
+    {isAddModalOpen && (
+      <div className="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50">
+        <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
+          <div className="mb-6">
+            <div className="flex items-center text-sm">
+              <span className="text-gray-600">Course</span>
+              <span className="mx-2">›</span>
+              <span className="font-medium">Add Coach</span>
+            </div>
           </div>
-
-          {/* Quick Access */}
-          <div className="w-[300px]  bg-white p-6 rounded-xl shadow-md flex flex-col gap-4">
-            <h2 className="text-lg font-semibold">Quick Access</h2>
+          <div className="mb-4">
+            <label className="block text-sm mb-1">Select Course</label>
+            <div className="relative">
+              <select
+                name="module_id"
+                value={newCoach.module_id}
+                onChange={handleAddCoachChange}
+                className="appearance-none w-full bg-white border border-gray-300 px-4 py-2 pr-8 rounded text-sm focus:outline-none focus:ring-2 focus:ring-purple-500"
+              >
+                <option value="">Select a Course</option>
+                {Array.isArray(courses) &&
+                  courses.map((course) => (
+                    <option key={course.module_id} value={course.module_id}>
+                      {course.name}
+                    </option>
+                  ))}
+              </select>
+              <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </div>
+            </div>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+            <div>
+              <label className="block text-sm mb-1">Coach Name</label>
+              <input
+                type="text"
+                name="coachName"
+                placeholder="Coach Name"
+                value={newCoach.coachName}
+                onChange={handleAddCoachChange}
+                className="w-full px-4 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-purple-500"
+              />
+            </div>
+            <div>
+              <label className="block text-sm mb-1">Coach Email</label>
+              <input
+                type="email"
+                name="coachEmail"
+                placeholder="Email Id"
+                value={newCoach.coachEmail}
+                onChange={handleAddCoachChange}
+                className="w-full px-4 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-purple-500"
+              />
+            </div>
+          </div>
+          <div className="flex justify-between">
             <button
-              className="w-full border-2 border-dashed border-gray-400 rounded-xl flex flex-col items-center justify-center py-4 gap-2"
-              onClick={() => setCourseModel(true)}
+              type="button"
+              onClick={() => setIsAddModalOpen(false)}
+              className="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400 text-sm font-medium"
             >
-              <div className="bg-[#402BA3] text-white rounded-full p-2">
-                <Image src={addcourse}/>
-              </div>
-              <span className="text-sm font-medium text-black">Create Course</span>
+              Cancel
             </button>
-
             <button
-              className="w-full border-2 border-dashed border-gray-400 rounded-xl flex flex-col items-center justify-center py-4 gap-2"
-              onClick={() => setIsAddModalOpen(true)}
+              onClick={addCoach}
+              className="bg-indigo-700 hover:bg-indigo-800 text-white px-4 py-2 rounded text-sm"
             >
-              <div className="bg-white text-white rounded-full p-2">
-              <Image src={coach}/>
-              </div>
-              <span className="text-sm font-medium text-black">Add Coach</span>
+              Send
             </button>
-
-
-
-            {isAddModalOpen && (
-              <div className="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50">
-                <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
-                  <div className="mb-6">
-                    <div className="flex items-center text-sm">
-                      <span className="text-gray-600">Course</span>
-                      <span className="mx-2">›</span>
-                      <span className="font-medium">Add Coach</span>
-                    </div>
-                  </div>
-
-                  <div className="mb-4">
-                    <label className="block text-sm mb-1">Select Course</label>
-                    <div className="relative">
-                      <select
-                        name="module_id"
-                        value={newCoach.module_id}
-                        onChange={handleAddCoachChange}
-                        className="appearance-none w-full bg-white border border-gray-300 px-4 py-2 pr-8 rounded text-sm focus:outline-none focus:ring-2 focus:ring-purple-500"
-                      >
-                        <option value="">Select a Course</option>
-                        {Array.isArray(courses) &&
-                          courses.map((course) => (
-                            <option key={course.module_id} value={course.module_id}>
-                              {course.name}
-                            </option>
-                          ))}
-                      </select>
-
-                      <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                        <svg
-                          className="h-4 w-4"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M19 9l-7 7-7-7"
-                          />
-                        </svg>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                    <div>
-                      <label className="block text-sm mb-1">Coach Name</label>
-                      <input
-                        type="text"
-                        name="coachName"
-                        placeholder="Coach Name"
-                        value={newCoach.coachName}
-                        onChange={handleAddCoachChange}
-                        className="w-full px-4 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-purple-500"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm mb-1">Coach Email</label>
-                      <input
-                        type="email"
-                        name="coachEmail"
-                        placeholder="Email Id"
-                        value={newCoach.coachEmail}
-                        onChange={handleAddCoachChange}
-                        className="w-full px-4 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-purple-500"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="flex justify-between">
-                    <button
-                      type="button"
-                      onClick={() => setIsAddModalOpen(false)} // assuming this closes the modal
-                      className="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400 text-sm font-medium"
-                    >
-                      Cancel
-                    </button>
-                    <button
-                      onClick={addCoach}
-                      className="bg-indigo-700 hover:bg-indigo-800 text-white px-4 py-2 rounded text-sm"
-                    >
-                      Send
-                    </button>
-                  </div>
-                </div>
-              </div>
-            )}
-            <button
-              className="w-full border-2 border-dashed border-gray-400 rounded-xl flex flex-col items-center justify-center py-4 gap-2"
-              onClick={() => setIsAddStdModalOpen(true)}
-            >
-              <div className="bg-[#402BA3] text-white rounded-full p-2">
-              <Image src={addstudent}/>
-              </div>
-              <span className="text-sm font-medium text-black">Add Student</span>
-            </button>
-            
-            {isAddStdModalOpen && (
-              <div className="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50">
-                <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
-                  <div className="mb-6">
-                    <div className="flex items-center text-sm">
-                      <span className="text-gray-600">Course</span>
-                      <span className="mx-2">›</span>
-                      <span className="font-medium">Add Students</span>
-                    </div>
-                  </div>
-
-                  <div className="mb-4">
-                    <label className="block text-sm mb-1">Select Course</label>
-                    <div className="relative">
-                      <select
-                        name="module_id"
-                        value={newStudent.module_id}
-                        onChange={handleaddStudentChange}
-                        className="appearance-none w-full bg-white border border-gray-300 px-4 py-2 pr-8 rounded text-sm focus:outline-none focus:ring-2 focus:ring-purple-500"
-                      >
-                        <option value="">Select a Course</option>
-                        {Array.isArray(forStudents) && forStudents.map((course) => (
-                          <option key={course.module_id} value={course.module_id}>
-                            {course.name}
-                          </option>
-                        ))}
-                      </select>
-                      <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                        <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                        </svg>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                    <div>
-                      <label className="block text-sm mb-1">Student Name</label>
-                      <input
-                        type="text"
-                        name="studentName"
-                        placeholder="Student Name"
-                        value={newStudent.studentName}
-                        onChange={handleaddStudentChange}
-                        className="w-full px-4 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-purple-500"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm mb-1">Student Email</label>
-                      <input
-                        type="email"
-                        name="studentEmail"
-                        placeholder="Email Id"
-                        value={newStudent.studentEmail}
-                        onChange={handleaddStudentChange}
-                        className="w-full px-4 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-purple-500"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="flex justify-between">
-                    <button
-                      type="button"
-                      onClick={() => setIsAddStdModalOpen(false)} // assuming this closes the modal
-                      className="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400 text-sm font-medium"
-                    >
-                      Cancel
-                    </button>
-                    <button
-                      onClick={addStudent}
-                      className="bg-indigo-700 hover:bg-indigo-800 text-white px-4 py-2 rounded text-sm"
-                    >
-                      Send
-                    </button>
-                  </div>
-                </div>
-              </div>
-            )}
           </div>
         </div>
+      </div>
+    )}
 
-        {/* Courses Analysis */}
-        <div className="bg-white p-6 rounded-xl shadow-md">
-          <h2 className="text-lg font-semibold mb-4">Courses Analysis</h2>
-          <ResponsiveContainer width="100%" height={250}>
-            <BarChart data={courseData}>
-              <XAxis dataKey="day" />
-              <YAxis />
-              <Tooltip />
-              <Bar dataKey="students" fill="#34d399" />
-            </BarChart>
-          </ResponsiveContainer>
+    {/* Add Student Modal */}
+    {isAddStdModalOpen && (
+      <div className="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50">
+        <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
+          <div className="mb-6">
+            <div className="flex items-center text-sm">
+              <span className="text-gray-600">Course</span>
+              <span className="mx-2">›</span>
+              <span className="font-medium">Add Students</span>
+            </div>
+          </div>
+          <div className="mb-4">
+            <label className="block text-sm mb-1">Select Course</label>
+            <div className="relative">
+              <select
+                name="module_id"
+                value={newStudent.module_id}
+                onChange={handleaddStudentChange}
+                className="appearance-none w-full bg-white border border-gray-300 px-4 py-2 pr-8 rounded text-sm focus:outline-none focus:ring-2 focus:ring-purple-500"
+              >
+                <option value="">Select a Course</option>
+                {Array.isArray(forStudents) && forStudents.map((course) => (
+                  <option key={course.module_id} value={course.module_id}>
+                    {course.name}
+                  </option>
+                ))}
+              </select>
+              <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </div>
+            </div>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+            <div>
+              <label className="block text-sm mb-1">Student Name</label>
+              <input
+                type="text"
+                name="studentName"
+                placeholder="Student Name"
+                value={newStudent.studentName}
+                onChange={handleaddStudentChange}
+                className="w-full px-4 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-purple-500"
+              />
+            </div>
+            <div>
+              <label className="block text-sm mb-1">Student Email</label>
+              <input
+                type="email"
+                name="studentEmail"
+                placeholder="Email Id"
+                value={newStudent.studentEmail}
+                onChange={handleaddStudentChange}
+                className="w-full px-4 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-purple-500"
+              />
+            </div>
+          </div>
+          <div className="flex justify-between">
+            <button
+              type="button"
+              onClick={() => setIsAddStdModalOpen(false)}
+              className="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400 text-sm font-medium"
+            >
+              Cancel
+            </button>
+            <button
+              onClick={addStudent}
+              className="bg-indigo-700 hover:bg-indigo-800 text-white px-4 py-2 rounded text-sm"
+            >
+              Send
+            </button>
+          </div>
         </div>
+      </div>
+    )}
+  </div>
+</div>
+
 
         {/* Top Watch Videos */}
         <div>
@@ -1088,7 +1083,7 @@ export default function Dashboard() {
   return (
     <>
       {isAdminOrOwner ? renderAdminDashboard() : renderUserDashboard()}
-      <DeleteConfirmatio jgfhgsdfhghgchgsdhjhsvukhdnModal />
+      <DeleteConfirmationModal />
     </>
   );
 } 
